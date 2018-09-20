@@ -1,0 +1,5 @@
+---
+
+- name: set timezone to Europe/Rome
+  timezone:
+    name: Europe/Rome

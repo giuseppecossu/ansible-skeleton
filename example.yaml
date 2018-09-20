@@ -1,0 +1,13 @@
+---
+
+- name: Common tasks
+  hosts: all
+  remote_user: centos
+  become: yes
+  become_method: sudo
+  vars_files:
+    - "group_vars/group-variables.yaml"
+  roles:
+    - role_name
+  tasks:
+    - include: tasks/basic-packages.yaml

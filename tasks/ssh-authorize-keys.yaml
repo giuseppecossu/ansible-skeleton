@@ -1,0 +1,9 @@
+---
+
+- name: Set up multiple authorized keys
+  authorized_key:
+    user: ubuntu
+    state: present
+    key: '{{ item }}'
+  with_file:
+    - files/test-sshkey

@@ -1,0 +1,11 @@
+---
+
+- name: Install packages
+  package:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - vim
+    - unzip
+    - git

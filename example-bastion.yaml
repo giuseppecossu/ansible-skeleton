@@ -1,0 +1,29 @@
+---
+
+- name: VPN
+  hosts: bastion
+  remote_user: ubuntu
+  become: yes
+  become_method: sudo
+
+  pre_tasks:
+    - include: tasks/timezone.yaml
+    
+  roles:
+    - vpn
+  vars:
+    vpn_address: 1.1.1.1
+    nameserver: '8.8.8.8 8.8.4.4'
+
+  tasks:
+    - name: Sync keys to S3
+      shell: aws s3 sync /etc/vpn/keys/ s3://vpn-test-keys --region eu-west-1
+
+    - name: enable networking (/etc/resolv.conf)
+      template: src=templates/etc_resolv.conf.j2 dest=/etc/resolvconf/resolv.conf.d/base owner=root group=root mode=0644
+
+    - name: enable networking (clean resolvconf at /etc)
+      file: path=/etc/resolvconf/resolv.conf.d/original state=absent
+
+    - name: enable networking (clean resolvconf at /run)
+      file: path=/run/resolvconf/interface/original.resolvconf state=absent
